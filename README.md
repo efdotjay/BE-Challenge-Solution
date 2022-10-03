@@ -16,7 +16,7 @@ Run `npm run dev` in project root to start the server. Server will be listening 
 
 ## Test
 
-Add 2 or 3 dummy products in the products table.
+5 products are inserted into database (From id 1 through 5).
 
 Make the request with following format
 
