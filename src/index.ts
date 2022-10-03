@@ -8,16 +8,25 @@ if (!process.env.PORT) {
 import express from "express";
 import { errorHandler } from './middlewares/error.middleware';
 import { notFoundHandler } from './middlewares/not-found.middleware';
+import { orderRouter } from './orders/order.router';
+import init from './init';
 
-const PORT: number = parseInt(process.env.PORT);
+(async () => {
+  await init();
 
-const app = express();
-app.use(express.urlencoded());
-app.use(express.json());
+  const PORT: number = parseInt(process.env.PORT as string);
 
-app.use(errorHandler);
-app.use(notFoundHandler);
+  const app = express();
+  app.use(express.urlencoded());
+  app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+  app.use('/orders', orderRouter);
+
+  app.use(errorHandler);
+  app.use(notFoundHandler);
+
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
+  
+})();
