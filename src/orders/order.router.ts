@@ -12,7 +12,7 @@ orderRouter.post('/', async (req: Request, res: Response) => {
   try {
     const idempotenceKey = req.headers['x-idempotence-key'] as string;
     if (cache[idempotenceKey])
-      return res.status(304).json(cache[idempotenceKey]);
+      return res.status(201).json(cache[idempotenceKey]);
 
     const {cardNo, expiryDate, cvc, items} = req.body as BaseOrderAttributes & PaymentDetails;
 
@@ -23,9 +23,10 @@ orderRouter.post('/', async (req: Request, res: Response) => {
       throw new Error('Invalid Input data');
 
     const order = await createOrder({items});
-    
-    res.json(order);
-    cache[idempotenceKey] = order;
+
+    res.status(201).json(order);
+    if (idempotenceKey)
+      cache[idempotenceKey] = order;
   }
   catch(err){
     res.send((err as Error).message);
