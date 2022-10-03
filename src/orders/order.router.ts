@@ -1,6 +1,7 @@
 
 import express, {Request, Response} from 'express';
 import { BaseOrderAttributes } from './order.interface';
+import { PaymentDetails } from './payment.interface';
 import { createOrder } from './order.service';
 
 const cache: any = {};
@@ -13,12 +14,17 @@ orderRouter.post('/', async (req: Request, res: Response) => {
     if (cache[idempotenceKey])
       return res.status(304).json(cache[idempotenceKey]);
 
-    const data = req.body as BaseOrderAttributes;
-    if (!Array.isArray(data.items))
-      throw new Error('Invalid Input data');
-    const order = await createOrder(data);
-    res.json(order);
+    const {cardNo, expiryDate, cvc, items} = req.body as BaseOrderAttributes & PaymentDetails;
 
+    if (!cardNo || !expiryDate || !cvc)
+      throw new Error('Incomplete payment details.');
+
+    if (!Array.isArray(items))
+      throw new Error('Invalid Input data');
+
+    const order = await createOrder({items});
+    
+    res.json(order);
     cache[idempotenceKey] = order;
   }
   catch(err){
