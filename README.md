@@ -22,7 +22,7 @@ Make the request with following format
 
 `POST localhost:<port>/orders`
 
-#### Data
+#### Body
 
 ```
 {
