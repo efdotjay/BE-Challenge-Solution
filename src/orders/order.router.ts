@@ -11,7 +11,7 @@ orderRouter.post('/', async (req: Request, res: Response) => {
   try {
     const idempotenceKey = req.headers['x-idempotence-key'] as string;
     if (cache[idempotenceKey])
-      return res.status(304).send('Not Modified');
+      return res.status(304).json(cache[idempotenceKey]);
 
     const data = req.body as BaseOrderAttributes;
     if (!Array.isArray(data.items))
