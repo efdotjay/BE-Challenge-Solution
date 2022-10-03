@@ -27,9 +27,12 @@ Make the request with following format
 ```
 {
   items: [
-    {"product_id": 1, quantity: 5},
-    {"product_id": 2, quantity: 15}
-  ]
+    {"product_id": 1, "quantity": 5},
+    {"product_id": 2, "quantity": 15}
+  ],
+  "cardNo": "12312312312",
+  "expiryDate": "12/12",
+  "cvc": 123
 }
 ```
 
