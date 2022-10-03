@@ -22,7 +22,7 @@ Make the request with following format
 
 `POST localhost:<port>/orders`
 
-Data
+#### Data
 
 ```
 {
@@ -31,3 +31,8 @@ Data
     {"product_id": 2, quantity: 15}
   ]
 }
+```
+
+#### Header for maintaining idempotence
+
+Send a header named `x-idempotence-key` along the request with some UUID to maintain idempotence.
