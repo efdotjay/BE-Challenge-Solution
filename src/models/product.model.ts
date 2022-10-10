@@ -20,8 +20,14 @@ Product.init({
     type: DataTypes.TEXT,
     allowNull: false
   },
-  price: DataTypes.FLOAT.ZEROFILL,
-  qty_in_stock: DataTypes.INTEGER.ZEROFILL
+  price: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0
+  },
+  qty_in_stock: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  }
   
 }, {
   sequelize

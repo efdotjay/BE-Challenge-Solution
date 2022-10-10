@@ -22,9 +22,19 @@ export const createOrder = async (orderInput: BaseOrderAttributes) => {
 
   await Promise.all(items.map(item => {
     return order.addProduct(item.product, { through: { quantity: item.quantity } })
+      .then(() => {
+        // Update quantity in stock.
+        return item.product.decrement('qty_in_stock', {by: item.quantity});
+      })
+    ;
   }));
 
   return order.reload({
-    include: Product
+    include: {
+      model: Product,
+      attributes: {
+        exclude: ['qty_in_stock', 'createdAt', 'updatedAt']
+      }
+    }
   });
 };
